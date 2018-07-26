@@ -8,6 +8,7 @@ engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
 def main():
+    """Init tables and seed books.csv"""
     db.execute("DROP TABLE IF EXISTS books_tmp;")
     db.execute("DROP TABLE IF EXISTS books;")
     db.execute("DROP TABLE IF EXISTS authors;")
