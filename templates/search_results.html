@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Search results
+{% endblock %}
+
+{% block body %}
+    <p>You searched for <b>{{ q }}</b></p>
+    <ul>
+        {% for book in books %}
+            <li>{{ book.title }}, {{ book.author }} ({{ book.year_pub }})</li>
+        {% else %}
+            <li>No result.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

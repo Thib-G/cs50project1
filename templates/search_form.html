@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Search
+{% endblock %}
+
+{% block body %}
+    <form action="{{ url_for('search')}}" method="post">
+        <div class="form-group">
+            <label for="exampleInputSearch">Email address</label>
+            <input
+                type="text"
+                class="form-control"
+                id="exampleInputSearch"
+                aria-describedby="searchHelp"
+                placeholder="Search"
+                name="q"
+            >
+            <small id="searchHelp" class="form-text text-muted">Search a book in the database.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}
