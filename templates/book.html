@@ -13,8 +13,7 @@
         {% if goodread.success %}
             <p>Goodreads rating:
                 <a href="https://www.goodreads.com/search?q={{ book.isbn }}">
-                    {{ goodread.result.average_rating }} ({{ goodread.result.work_ratings_count }} ratings).
-                </a>
+                    {{ goodread.result.average_rating }} ({{ goodread.result.work_ratings_count }} ratings)</a>.
             </p>
         {% else %}
             <p>Problem fetching Goodread ratings</p>
