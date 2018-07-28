@@ -1,0 +1,5 @@
+export FLASK_APP=application.py
+export FLASK_DEBUG=1
+export DATABASE_URL=postgres://user:password@host:5432/db
+export GOODREAD_API_KEY=YOUR_API_KEY
+flask run
