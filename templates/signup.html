@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Sign up
+{% endblock %}
+
+{% block body %}
+    {% if user %}
+    <h2>You are logged in</h2>
+    <p>You are logged in as <b>{{ user.email }}</b> <small>({{ user.id }})</small></p>
+    {% else %}
+    <h2>New user</h2>
+    <p>Sign up:</p>
+    <form action="{{ url_for('signup') }}" method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail">Email</label>
+            <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail"
+                aria-describedby="emailHelp"
+                placeholder="Email"
+                name="email"
+                required
+            >
+            <small id="emailHelp" class="form-text text-muted">Enter your email.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword">Password</label>
+            <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword"
+                aria-describedby="passwordHelp"
+                placeholder="Password"
+                name="password"
+                required
+            >
+            <small id="passwordHelp" class="form-text text-muted">Enter your password.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword2">Confirm password</label>
+            <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword2"
+                aria-describedby="password2Help"
+                placeholder="Confirm password"
+                name="password2"
+                required
+            >
+            <small id="password2Help" class="form-text text-muted">Confirm your password.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+    </form>
+    {% endif %}
+{% endblock %}

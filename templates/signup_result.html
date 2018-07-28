@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Sign up result
+{% endblock %}
+
+{% block body %}
+    {% if user %}
+        <p>Welcome, <b>{{ user.email }}</b>, your account has been created.</p>
+    {% else %}
+        <p>Error: 
+            {% if error %}
+                {{ error }}
+            {% else %}
+                Unknown error
+            {% endif %},
+            please <a href="{{ url_for('signup') }}">try again</a></p>
+    {% endif %}
+{% endblock %}
