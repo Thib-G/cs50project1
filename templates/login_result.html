@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Login result
+{% endblock %}
+
+{% block body %}
+    {% if user %}
+        <p>Welcome, <b>{{ user.email }}</b></p>
+        <p id="redirect"></p>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('redirect').innerHTML = 'Redirecting to search...';
+                setTimeout(redirectTo, 2000);
+            });
+            function redirectTo() {
+                var address = '{{ url_for('search') }}';
+                window.location = address;
+            }
+        </script>
+    {% else %}
+        <p>Sorry, wrong email or password, please <a href="{{ url_for('login') }}">try again</a></p>
+    {% endif %}
+{% endblock %}
