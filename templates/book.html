@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Book
+{% endblock %}
+
+{% block body %}
+
+    {% if book %}
+        <h2>{{ book.title }} ({{ book.year_pub }})
+        <small class="text-muted">{{ book.author }}</small></h2>
+        <p class="text-muted">ISBN {{ book.isbn }}</p>
+        {% if goodread.success %}
+            <p>Goodreads rating:
+                <a href="https://www.goodreads.com/search?q={{ book.isbn }}">
+                    {{ goodread.result.average_rating }} ({{ goodread.result.work_ratings_count }} ratings).
+                </a>
+            </p>
+        {% else %}
+            <p>Problem fetching Goodread ratings</p>
+        {% endif %}
+        <h3>Reviews</h3>
+        <h4>All reviews</h4>
+
+        <div class="list-group">
+        {% for review in reviews %}
+            <div class="list-group-item">
+                <div>{% for i in range(review.rating) %}⭐{% endfor %} {{ review.rating }} stars </div>
+                <blockquote class="blockquote">
+                    <p class="mb-0">{{ review.review }}</p>
+                    <footer class="blockquote-footer">{{ review.email }}</footer>
+                </blockquote>
+                {% if session.user.email == review.email %}
+                    <form action="{{ url_for('delete_review') }}" method="post">
+                        <input type="hidden" name="isbn" value="{{ book.isbn }}">
+                        <input type="hidden" name="review_id" value="{{ review.review_id }}">
+                        <button class="btn btn-link" type="submit">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="list-group-item">
+                No review yet.
+            </div>
+        {% endfor %}
+        </div>
+
+        {% if already_reviewed %}
+        <div>You have already reviewed this book!</div>
+
+        {% else %}
+            <h4>Write review</h4>
+            <form action="{{ url_for('post_review') }}" method="post">
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <input type="hidden" name="isbn" value="{{ book.isbn }}">
+                <div class="form-group">
+                    <label for="selectRating">Rating:</label>
+                    <select class="form-control" name="rating" id="selectRating" required>
+                        {% for rating in range(1, 6) %}
+                        <option value="{{ rating }}" {% if (rating == 5) %} selected="selected" {% endif %}>{{ rating }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-group">
+                        <label for="reviewTextarea">Review:</label>
+                        <textarea class="form-control" name="review" id="reviewTextarea" rows="8" required></textarea>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Post review</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p>Not found</p>
+    {% endif %}
+{% endblock %}
