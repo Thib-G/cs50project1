@@ -6,11 +6,24 @@
 
 {% block body %}
     <p>You searched for <b>{{ q }}</b></p>
-    <ul>
+    <div class="list-group book-list">
         {% for book in books %}
-            <li>{{ book.title }}, {{ book.author }} ({{ book.year_pub }})</li>
+            <div class="list-group-item list-group-item-action">
+                <div class="text-muted small">{{ book.author }}</div>
+                <div>
+                    <a href="{{ url_for('book', isbn=book.isbn) }}">{{ book.title }}</a> <small>({{ book.year_pub }})</small>
+                </div>
+                {% if book.reviews_count > 0 %}
+                <div class="text-muted small">{{ book.reviews_count }} reviews</div>
+                {% endif %}
+            </div>
         {% else %}
-            <li>No result.</li>
+            <div class="list-group-item list-group-item-action">No result.</div>
         {% endfor %}
-    </ul>
+        </div>
+    <script src="{{ url_for('static', filename='mark.min.js') }}"></script>
+    <script>
+        var instance = new Mark('.book-list');
+        instance.mark('{{ q }}');
+    </script>
 {% endblock %}
