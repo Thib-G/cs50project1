@@ -98,17 +98,23 @@ def signup():
 def search():
     if request.method == "POST":
         q = request.form.get("q")
+        # Trim leading and trailing spaces
+        q = q.strip()
+        # Remove multiple spaces
+        while "  " in q:
+            q = q.replace("  ", " ")
+
+        # Create array of strings
+        q_array = [f"%{word}%" for word in q.split(" ")]
         books = db.execute("""
             SELECT b.isbn, b.title, a.name author, b.year_pub,
                 (SELECT COUNT(*) FROM reviews r WHERE r.book_id = b.id) reviews_count
             FROM books b JOIN authors a ON b.author_id = a.id
             WHERE 
-                b.isbn ILIKE :q
-                OR b.title ILIKE :q
-                OR a.name ILIKE :q
+                b.isbn || b.title || a.name ILIKE ALL (:q_array)
             ORDER BY a.name, b.year_pub
             LIMIT 100;
-        """, {"q": f'%{q}%'}).fetchall()
+        """, {"q_array": q_array }).fetchall()
         
         return render_template("search_results.html", q=q, books=books)
     
